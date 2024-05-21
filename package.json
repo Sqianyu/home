@@ -9,7 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.4.21"
+    "@tsparticles/slim": "^3.4.0",
+    "@tsparticles/vue3": "^3.0.1",
+    "axios": "^1.7.1",
+    "core-js": "^3.37.1",
+    "element-plus": "^2.7.3",
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.2",
+    "vuex": "^4.1.0",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
