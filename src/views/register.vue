@@ -6,15 +6,15 @@
                 <div class="content-title">登录</div>
                 <el-form ref="loginForm">
                     <el-form-item style="margin:25px 0px">
-                        <el-input v-model="username" name="用户名" aria-label="用户名" placeholder="用户名" size="large" 
+                        <el-input v-model="username" name="用户名" aria-label="用户名" placeholder="用户名"
                             :rules="[{ required: true, message: '请填写用户名' }]" />
                     </el-form-item>
                     <el-form-item>
-                        <el-input v-model="password" type="password" name="密码" aria-label="密码" placeholder="密码" size="large" 
+                        <el-input v-model="password" type="password" name="密码" aria-label="密码" placeholder="密码"
                             :rules="[{ required: true, message: '请填写密码' }]" />
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="large" style="width: 100%;" round @keyup.enter.native="loginBtn" @click="loginBtn">登录</el-button>
+                        <el-button type="primary" @keyup.enter.native="loginBtn" @click="loginBtn">登录</el-button>
                     </el-form-item>
                     <div class="content-bottom">
                         <div @click="topassword">忘记密码？</div>
@@ -27,31 +27,19 @@
 </template>
 <script setup>
 import particles from './common/particles.vue'
-import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import util from 'util'
 const router = useRouter()
 const username = '';
 const password = '';
 const loginData = [];
 const loginBtn = () => {
-    let res = util.http({
-        url: "/users/login",
-        data: { "username": "admin123", "pwd": "1243"}
-    })
-    console.log(res);
-} 
-    
+};
 const toregister = () => {
     router.push('/register')
 };
 const topassword = () => {
-    util.ElMessage(3, '功能暂未开放!')
-};
-onMounted(() => {
-   
-    console.log('Component is mounted!');
-});
+    ElMessage.error('Oops, this is a error message.')
+}
 </script>
 <style lang="less" scoped>
 .content {

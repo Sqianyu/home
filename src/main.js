@@ -6,13 +6,19 @@ import store from './store'
 import Particles from "@tsparticles/vue3";
 import { loadSlim } from "@tsparticles/slim";
 import ElementPlus from 'element-plus';
+import axios from 'axios'
+import * as Icons from '@element-plus/icons-vue';  
 import 'element-plus/theme-chalk/index.css'
-import http from './util'
+
 
 const app = createApp(App)
-app.config.globalProperties.$http = http
-
+Object.keys(Icons).forEach(key => {  
+  app.component(key, Icons[key]);  
+}); 
+app.provide('$axios',axios)
 app.config.productionTip = false
+
+
 app.use(router).use(store).use(ElementPlus).use(Particles, {
     init: async (engine) => {
       // 加载精简版本
