@@ -1,4 +1,4 @@
-import { ElMessage } from "element-plus";
+import { ElMessage,ElMessageBox } from "element-plus";
 import http from "./http";
 
 const util = {
@@ -13,6 +13,12 @@ const util = {
       ElMessage.error(message);
     }
   },
+  ElMessageBox(message) {
+    ElMessageBox.alert(message, '提示', {
+    confirmButtonText: '确定',
+  })
+  },
+  
   http({url, data}) {
     return http({
       url,

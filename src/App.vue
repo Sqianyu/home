@@ -4,6 +4,8 @@
 <script setup>
     
 </script>
-<style scoped>
-
+<style lang="less">
+svg, .el-button:focus {
+   outline: none;
+}
 </style>

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import util from 'util'
 
 const http = axios.create({
   baseURL: 'http://127.0.0.1:3000',
@@ -14,6 +15,7 @@ http.interceptors.request.use(
   },
   error => {
     // 请求错误处理
+    util.ElMessageBox('Request Error:'+ error)
     console.log('Request Error:', error)
     return Promise.reject(error)
   }
@@ -24,12 +26,14 @@ http.interceptors.response.use(
   response => {
     // 响应后处理
     if (response.status === 200 && response.data.code === 200) {
-      return Promise.resolve(response.data.data)
+      return Promise.resolve(response.data)
     } else {
+      util.ElMessageBox(response.data.msg)
       return Promise.reject(response.data)
     }
   },
   error => {
+    util.ElMessageBox('Response Error:'+ error)
     console.log('Response Error:', error)
     return Promise.reject(error)
   }
