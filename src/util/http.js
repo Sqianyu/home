@@ -2,7 +2,7 @@ import axios from 'axios'
 import util from 'util'
 
 const http = axios.create({
-  baseURL: 'http://127.0.0.1:3000',
+  baseURL: import.meta.env.VITE_SEVER_URL,
   timeout: 5000
 })
 

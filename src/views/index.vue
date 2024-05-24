@@ -1,5 +1,5 @@
 <template>
-  <div class="s-app-wrapper" :class="[light && 'reader-night-mode']">
+  <div class="s-app-wrapper" :class="[night && 'reader-night-mode']">
     <header class="hd f-g-hd">
       <div class="header-wrap">
         <a class="navbar-logo" href="/">
@@ -10,19 +10,9 @@
         </div>
         <div class="navbar-set">
           <div class="style-mode">
-            <el-popover placement="bottom" :width="200" trigger="click" :hide-after="0">
-              <template #reference>
-                <Setting />
-              </template>
-              <div class="popover-modal" style="left: 656px;">
-                <div class="meta"><MoonNight /><span>夜间模式</span></div>
-                <div class="switch day-night-group"><a class="switch-btn">开</a> <a class="switch-btn active">关</a></div>
-                <hr>
-                <div class="switch font-family-group"><a class="switch-btn font-song">宋体</a> <a
-                    class="switch-btn font-hei active">黑体</a></div>
-                <div class="switch"><a class="switch-btn active">简</a> <a class="switch-btn">繁</a></div>
-              </div>
-            </el-popover>
+            <Setting />
+            <el-switch v-model="night" style=" --el-switch-on-color: #4C4D4F; --el-switch-border-color: #dcdfe6;"
+              :active-action-icon="Moon" :inactive-action-icon="Sunny" />
             <el-button type="info" class="log-in" text @click="goLogin" v-if="!store.state.is_login">登录</el-button>
             <a class="navbar-head" href="/" v-if="store.state.is_login">
               <img :src="store.state.user.headImg" alt="Nav logo">
@@ -34,6 +24,17 @@
         </div>
       </div>
     </header>
+    <div class="p-m-body">
+      <div class="p-wrap">
+        <div class="p-list" v-for="(host,key) in urlList" :key="key" @click="toHost(host)">
+          <div class="p-detail">
+            <p class="p-detail-name">{{ host.name }}</p>
+            <p class="p-detail-host">{{ host.url }}</p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -41,10 +42,14 @@
 import { useRouter } from 'vue-router'
 import { ref, onBeforeUnmount, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { Sunny, Moon } from '@element-plus/icons-vue'
+const urlList = ref([{ name: '**管理系统', url: import.meta.env.VITE_WEB_URL},
+                    { name: '**管理系统', url: import.meta.env.VITE_WEB_URL}, 
+                    { name: '**管理系统', url: import.meta.env.VITE_WEB_URL}
+                  ])
 const router = useRouter()
 const store = useStore()
-const light = false;
-const isDark = true;
+const night = ref(false);
 const nowTime = ref('')
 const goLogin = () => {
   router.push('/login')
@@ -56,7 +61,10 @@ const logout = () => {
   store.commit('logout')
 }
 const complement = (value) => {
-    return value < 10 ? `0${value}` : value.toString()
+  return value < 10 ? `0${value}` : value.toString()
+}
+const toHost = (host) => {
+  window.open(host.url)
 }
 /**
  * 格式化时间为XXXX年XX月XX日XX时XX分XX秒
@@ -64,15 +72,15 @@ const complement = (value) => {
  * @returns {string} 返回格式化后的时间
  */
 const formateDate = () => {
-    const time = new Date()
-    const year = time.getFullYear()
-    const month = complement(time.getMonth() + 1)
-    const day = complement(time.getDate())
-    const hour = complement(time.getHours())
-    const minute = complement(time.getMinutes())
-    const second = complement(time.getSeconds())
-    const week = '星期' + '日一二三四五六'.charAt(time.getDay());
-    return `${year}年${month}月${day}日 ${hour}:${minute}:${second}`
+  const time = new Date()
+  const year = time.getFullYear()
+  const month = complement(time.getMonth() + 1)
+  const day = complement(time.getDate())
+  const hour = complement(time.getHours())
+  const minute = complement(time.getMinutes())
+  const second = complement(time.getSeconds())
+  const week = '星期' + '日一二三四五六'.charAt(time.getDay());
+  return `${year}年${month}月${day}日 ${hour}:${minute}:${second}`
 }
 let timer = 0
 onMounted(() => {
@@ -85,8 +93,8 @@ onMounted(() => {
   }
 })
 onBeforeUnmount(() => {
-    clearInterval(timer) //清除定时器
-    timer = 0
+  clearInterval(timer) //清除定时器
+  timer = 0
 })
 </script>
 
@@ -110,7 +118,7 @@ onBeforeUnmount(() => {
       justify-content: space-between;
       height: 100%;
       padding: 0 15px;
-
+      box-sizing: border-box;
       .navbar-logo {
         float: left;
         width: 40px;
@@ -154,9 +162,74 @@ onBeforeUnmount(() => {
             height: 40px;
             margin: 0 16px;
           }
+
+          .el-switch {
+            margin: auto 0;
+            margin-left: 12px;
+          }
         }
       }
     }
+  }
+
+  .p-m-body {
+    display: flex;
+    align-items: center;
+    background-image: url('../assets/work.png');
+    background-size: cover;
+    height: calc(~"100% - 56px");
+    min-width: 768px;
+    .p-wrap {
+      display: flex;
+      width: 1200px;
+      min-width: 768px;
+      margin: auto;
+      padding: 18px;
+      text-align: center;
+      background: #fff;
+      height: 90%;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      box-sizing: border-box;
+      .p-list {
+        display: flex;
+        align-items: center;
+        width: 355px;
+        height: 215px;
+        box-sizing: border-box;
+        margin: 15px;
+        text-align: center;
+        color: #555;
+        border: 1px solid rgba(0, 0, 0, 0.075);
+        border-bottom-color: rgba(0, 0, 0, 0.125);
+        border-radius: 4px;
+        transition-property: transform;
+        transition-duration: 0.3s;
+        &:hover {
+          transform: translateY(-10px);
+        }
+        .p-detail {
+          width: 100%;
+          margin-bottom: 40px;
+          .p-detail-name {
+            font-weight: 100;
+            color: #000;
+            font-size: 24px;
+            margin-bottom: 14px;
+          }
+          .p-detail-host {
+            color: #777;
+            text-overflow: ellipsis;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 300px;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
   }
 }
 
@@ -171,6 +244,17 @@ img {
 
   .f-g-hd {
     border-bottom: 1px solid #181C25;
+
+    .el-switch__action {
+      background-color: #3f3f3f
+    }
+  }
+  .p-wrap {
+    background-color: #3f3f3f !important;
+    color: #c8c8c8 ;
+    .p-list {
+      background-color: #fff;
+    }
   }
 }
 </style>
